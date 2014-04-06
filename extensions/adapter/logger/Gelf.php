@@ -23,14 +23,18 @@ class Gelf extends \lithium\core\Object {
 	 *
 	 * @var array
 	 */
+
 	
 	protected $_levels = array(
-		'debug' 	=> 0,
-		'info'  	=> 1,
-		'warn'  	=> 2,
+		'emergency' => 0,
+		'alert'  	=> 1,
+		'critical'  => 2,
 		'error' 	=> 3,
-		'fatal' 	=> 4,
-		'unknown' 	=> 5
+		'warning' 	=> 4,
+		'notice' 	=> 5,
+        'info' 	    => 6,
+        'debug' 	=> 7,
+        
 	);
 
   /**
@@ -82,9 +86,11 @@ class Gelf extends \lithium\core\Object {
 		$_self =& $this;
 		$_levels = $this->_levels;
 
-		return function($self, $params) use (&$_self, $_levels) {
+		return function($self, $params) use (&$_self, $_levels,$type) {
 			$level = 5;
 			$options = $params['options'];
+            
+            $level = $_levels[$type];
 
 			if (isset($options['level']) && isset($_priorities[$options['level']])) {
 				$priority = $_priorities[$options['level']];
